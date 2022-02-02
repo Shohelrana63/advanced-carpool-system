@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box !important;
+}
+.login-page h1,
+h3 {
+  font-weight: bold;
+}
+.login-page input {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid lightgray;
+  padding-right: 0;
+  padding-left: 0;
+  font-weight: 500;
+  height: 45px;
+  border-bottom: 1px solid #c5c5c5;
+}
+.login-page input:focus {
+  box-shadow: none !important;
+  border-bottom: 1px solid #0b5b8a;
+}
+.login-page .login-btn {
+  background-image: linear-gradient(75deg, #0f83c7, #1b9be6);
+  border-color: transparent !important;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+.login-page .login-btn {
+  width: 461px;
+  margin: 0 auto;
+  height: 51px;
+  text-align: center;
+  padding: 8px;
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.tg-thirdparty-login {
+  text-align: center;
+}
+.tg-thirdparty-login .btn {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #3a4256;
+  background: #ffffff;
+  border: 1px solid #c7c7c7;
+  border-radius: 57px;
+}
+.tg-thirdparty-login .btn:hover {
+  background-image: linear-gradient(75deg, #0f83c7, #1b9be6);
+  color: #fff;
+}
+.tg-thirdparty-login .btn {
+  width: 461px;
+  margin: 0 auto;
+  height: 51px;
+  text-align: center;
+  padding: 8px;
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: baseline;
+  margin-top: 20px;
+}
+.form-divider {
+  max-width: 400px;
+  margin: 24px auto;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.form-divider p {
+  display: inline-block;
+  background: rgb(235, 232, 232);
+  position: relative;
+  margin-bottom: 0;
+  padding: 2px;
+  border-radius: 5px;
+}
+.form-divider:before,
+.form-divider:after {
+  content: "";
+  position: absolute;
+  width: calc(25% - 30px);
+  height: 1px;
+  background: #aaa;
+}
+.form-divider:before {
+  left: 0;
+}
+.form-divider:after {
+  right: 0;
+}

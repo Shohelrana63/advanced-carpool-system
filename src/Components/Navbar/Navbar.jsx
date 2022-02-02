@@ -6,7 +6,7 @@ const Navbar = () => {
             <nav className="navbar navbar-expand-lg navbar-light py-3">
                 <div className="container">
                     <Link className="navbar-brand" to="/">
-                        <h1>Advanced Carpool System</h1>
+                        <h1 style={{color:"#0b5b8a", fontWeight: "bold"}}>Advanced Carpool System</h1>
                     </Link>
                     <button className="navbar-toggler" type="button"
                         data-toggle="collapse"
