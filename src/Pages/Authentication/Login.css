@@ -1,8 +1,8 @@
 * {
   box-sizing: border-box !important;
 }
-.login-page h1,
-h3 {
+.login-page h2,
+h4 {
   font-weight: bold;
 }
 .login-page input {
@@ -98,4 +98,18 @@ h3 {
 }
 .form-divider:after {
   right: 0;
+}
+.btn-logintoggle {
+  font-weight: normal;
+  padding: 0;
+}
+
+.btn-logintoggle:hover {
+  background: #1b9be6;
+  text-decoration: underline;
+}
+
+.register-login {
+  text-align: center;
+  margin-top: 20px;
 }

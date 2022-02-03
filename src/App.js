@@ -1,20 +1,36 @@
 import './App.css';
 import {
-  BrowserRouter,
-  Routes,
+  BrowserRouter as 
+  Router,
+  Switch,
   Route
 } from "react-router-dom";
 import Home from './Pages/Home/Home';
 import Login from './Pages/Authentication/Login';
+import { createContext, useState } from 'react';
+import PrivateRoute from './Pages/Authentication/PrivateRoute';
+import Dashboard from './Components/Dashboard/Dashboard';
 
+export const UserContext = createContext();
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState({});
+
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-    </Routes>
-  </BrowserRouter>
+    <UserContext.Provider value={[loggedInUser,setLoggedInUser]}>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <PrivateRoute path="/dashboard">
+          <Dashboard />
+        </PrivateRoute>
+      </Switch>
+    </Router>
+    </UserContext.Provider> 
   );
 }
 
