@@ -1,0 +1,20 @@
+.sidebar-header {
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #0b5b8a;
+}
+.sidebar span {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #27435a;
+}
+
+.sidebar .dashboard-component {
+  text-decoration: none;
+}
+
+.sidebar .dashboard-component:active span {
+  color: #27435a;
+}
