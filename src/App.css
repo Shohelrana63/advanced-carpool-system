@@ -2,5 +2,5 @@ html,
 body {
   scroll-behavior: smooth;
   font-family: "Poppins", sans-serif;
-  height: 100%;
+  /* height: 100%; */
 }

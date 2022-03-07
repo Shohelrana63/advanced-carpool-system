@@ -3,11 +3,12 @@
 }
 .search-form .btn {
   color: #ffffff;
-  background-image: linear-gradient(75deg, #0f83c7, #1b9be6);
+  background-color: rgb(233, 175, 29);
   font-weight: bold;
   font-size: 16px;
   padding: 10px 30px;
   margin-top: 35px;
+  border-radius: 5px;
 }
 .search-form {
   margin-left: 200px;
@@ -18,4 +19,19 @@
   font-size: 20px;
   line-height: 35px;
   color: #232323;
+}
+.findTrips h6 {
+  font-weight: 600;
+}
+.findTrips .card-header {
+  font-size: 20px;
+  font-weight: 800;
+  color: #044e79;
+}
+.findTrip .btn {
+  color: #ffffff;
+  background-color: rgb(216, 155, 1);
+  font-weight: bold;
+  font-size: 16px;
+  padding: 10px 30px;
 }

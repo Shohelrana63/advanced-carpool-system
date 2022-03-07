@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import "./MyTrips.css";
+import MyTripsData from './MyTripsData';
+
 const MyTrips = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const [ myTrips, setMyTrips ] = useState([]);
+    console.log("myTrips", myTrips);
+    useEffect(() => {
+			fetch(`http://localhost:8000/myTrips/${user.uid}`)
+				.then((res) => res.json())
+				.then((data) =>
+                    setMyTrips(data))
+            },[]);
+
     return (
         <div className="myTrips container row">
             <div className="col-md-4">
@@ -13,38 +25,12 @@ const MyTrips = () => {
 					<p>Name</p>
                 </div>
                 <div className="myTrips-card">
-                <div class="card border-info mt-5 mb-3">
-                    <div class="card-header">Trip Details</div>
-                    <div class="card-body">
-                        <div className="row">
-                            <div className="col-md-3">
-                                <h5 class="card-title">Start Location</h5>
-                                <p>Dhaka</p>
-                            </div>
-                            <div className="col-md-3">
-                                <h5 class="card-title">Destination</h5>
-                                <p>Barisal</p>
-                            </div>
-                            <div className="col-md-3">
-                                <h5 class="card-title">Fare</h5>
-                                <p>100</p>
-                            </div>
-                            <div className="col-md-3">
-                                <h5 class="card-title">Seat</h5>
-                                <p>3</p>
-                            </div>
-                            <div className="col-md-3">
-                                <h5 class="card-title">Can Smoke</h5>
-                                <p>No</p>
-                            </div>
-                            <div className="col-md-3">
-                                <h5 class="card-title">Allow Children</h5>
-                                <p>Yes</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
+                {
+                   myTrips.map(tripsData =>
+                        <MyTripsData tripsData={tripsData}
+                            key={tripsData._id}></MyTripsData>)
+                }
+              </div>
             </div>
         </div>
     );

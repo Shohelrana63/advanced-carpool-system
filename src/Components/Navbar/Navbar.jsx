@@ -1,8 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../App';
+import "./Navbar.css";
 const Navbar = () => {
-    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log("user", user);
+    const handleLogOut = () =>{
+        localStorage.removeItem('user')
+        //autoreload
+        window.location.reload(false);
+    }
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light py-3">
@@ -23,14 +29,17 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link className="nav-link active" to="/">Home</Link>
                             </li>
-                            <li className="nav-item">
-                             { loggedInUser.isSignedIn ?
-                            <p  style={{marginTop: "8px", fontWeight: "bold"}}>{loggedInUser.name}</p>
-                            : 
-                            <Link className="nav-link active" to="/login">Log In</Link>
-                             }
-                        </li>
                         </ul>
+                            { user ?
+                            <div className="d-flex">
+                            <p  style={{marginTop: "14px", marginLeft:"10px", fontWeight: "bold"}}>{user.displayName}</p>
+                            <button  style={{marginLeft:"15px", fontWeight: "bold"}} className="btn login-btn" onClick={handleLogOut}>Log Out</button>
+                            </div>
+                            : 
+                            <Link className="nav-link active" to="/login">
+                               <button className="btn login-btn">Log In</button>
+                            </Link>
+                             }
                     </div>
                 </div>
             </nav>

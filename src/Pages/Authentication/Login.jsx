@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import LoginImg from '../../Assests/loginImg.png';
 import googleLogo from '../../Assests/googleLogo.png';
@@ -6,8 +6,6 @@ import "./Login.css";
 import initializeAuthentication from './firebase.init';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile  } from "firebase/auth";
 import { useState } from 'react';
-import { useContext } from 'react';
-import { UserContext } from '../../App';
 
 const Login = () => {
     const[newUser, setNewUser] = useState(false);
@@ -15,23 +13,24 @@ const Login = () => {
         isSignedIn: false,
         name: '',
         email: '',
-        password: ''
+        password: '',
+        userType: '',
     });
-    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-    console.log("logged in user", loggedInUser);
+    console.log("user", user.userType);
+   
     const history = useHistory();
     const location = useLocation();
     let { from } = location.state || { from: { pathname: "/dashboard" } };
     
     const[error, setError] = useState("");
-    const [ currentUser, setCurrentUser ] = useState({
-		isSignedIn: false,
-		name: '',
-		email: '',
-		password: '',
-		error: '',
-		success: false
-	});
+    // const [ currentUser, setCurrentUser ] = useState({
+	// 	isSignedIn: false,
+	// 	name: '',
+	// 	email: '',
+	// 	password: '',
+	// 	error: '',
+	// 	success: false
+	// });
 
     initializeAuthentication();
     const auth = getAuth();
@@ -50,13 +49,13 @@ const Login = () => {
               name: displayName,
               email: email
           }
-          setCurrentUser(newUser);
-          setLoggedInUser(newUser);
+          setUser(newUser);
+        //   setLoggedInUser(newUser);
           history.replace(from);
           console.log(newUser);
         })
         .catch((error) => {
-            const newUser = {...currentUser};
+            const newUser = {...user};
             newUser.error = error.message;
             newUser.success = false;
             console.log(error);
@@ -85,9 +84,9 @@ const Login = () => {
     //email,password createUserWithEmailAndPassword
     const handleRegistration = (e) => {
         e.preventDefault();
-        createUserWithEmailAndPassword(auth,user.email, user.password)
+        createUserWithEmailAndPassword(auth, user.email, user.password)
         .then((result) => {
-            console.log(user);
+            console.log("resultUser", result.user);
             const {displayName, email} = result.user;
             console.log("user", displayName, email);
             const newUser = {
@@ -98,7 +97,9 @@ const Login = () => {
           updateUser(user.name);
           setError('');
           setUser(newUser);
-          updateUser(user.name);
+          console.log("userTYPE", user.userType);
+          localStorage.setItem("userType",user.userType);
+          localStorage.setItem("user", JSON.stringify(result.user));
           history.replace(from);
         })
         .catch(error => {
@@ -116,7 +117,6 @@ const Login = () => {
         signInWithEmailAndPassword(auth, user.email, user.password)
         .then((result) => {
             console.log(result.user);
-            console.log(user);
             const {displayName, email} = result.user;
             console.log("user", displayName, email);
             const newUser = {
@@ -126,21 +126,23 @@ const Login = () => {
             }
           setError('');
           setUser(newUser);
-          setLoggedInUser(newUser);
+          localStorage.setItem("userType",user.userType);
+          localStorage.setItem("user", JSON.stringify(result.user));
           history.replace(from);
         })
         .catch(error =>{
-            const newUser = { ...user };
+          const newUser = { ...user };
           newUser.error = error.message;
           newUser.success = false;
           setUser(newUser);
-            console.log(error);
+          console.log(error);
         })
     }
     //update updateProfile
     const updateUser = (name) => {
+        console.log("auth.currentUser", auth.currentUser);
         updateProfile(auth.currentUser, {
-            displayName: name
+            displayName: name,
           }).then(() => {
             // Profile updated!
             // ...
@@ -167,18 +169,10 @@ const Login = () => {
                                 <input onBlur={handleBlur} type="password" className="form-control mt-3 pl-0" placeholder="Password" name="password" required/>
                                 <span className="text-danger">{error}</span>
                                 <input onBlur={handleBlur} type="password" className="form-control mt-3 pl-0" placeholder="Confirm Password" name="confirmPassword" required/>
-                                
+                                <input onBlur={handleBlur} type="text" className="form-control mt-3 pl-0" placeholder="user type" name="userType" required/>
                                 <button type="submit" className="btn login-btn btn-block my-3">Create an account</button>
                             </form>
-                            <div>
-                            {user.success ? (
-                                <h5 className="text-success text-center mt-3">
-                                    User {newUser ? "created" : "logged in"} Successfully
-                                </h5>
-                                ) : (
-                                <h5 className="text-danger text-center mt-3">{user.error}</h5>
-                            )}
-                            </div>
+                            
                             <div className="register-login">
                                 Already have an account?
                                 <button className="btn btn-logintoggle ml-2" onClick={handleFormToggle}>
@@ -192,6 +186,7 @@ const Login = () => {
                             <form onSubmit={handleSignIn}>
                                 <input onBlur={handleBlur} type="email" className="form-control mt-3 pl-0" placeholder="Email" name="email" required/>
                                 <input onBlur={handleBlur} type="password" className="form-control mt-3 pl-0" placeholder="Password" name="password" required/>
+                                <input onBlur={handleBlur} type="text" className="form-control mt-3 pl-0" placeholder="user type" name="userType" required/>
                                 <span className="text-danger">{error}</span>
 
                                 <button type="submit" className="btn login-btn btn-block my-3">Log in</button>

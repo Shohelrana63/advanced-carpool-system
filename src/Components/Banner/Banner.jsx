@@ -2,25 +2,43 @@ import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useRef } from 'react';
 import "./Banner.css";
+import FindTrips from './FindTrips';
 const Banner = () => {
-    const [searchTrip, setSearchTrip] = useState({});
-
+    const [searchTrip, setSearchTrip] = useState({
+        startLocation:'',
+        destination:'',
+    });
+    const[findTrip, setFindTrip] = useState([]);
+    console.log("findTrip", findTrip);
     const handleBlur = e => {
-        const newSearchTrip = { ...searchTrip };
-        newSearchTrip[e.target.name] = e.target.value;
-        console.log("newSearchTrip: ", setSearchTrip(newSearchTrip) );
-        setSearchTrip(newSearchTrip);
+        setSearchTrip({
+            ...searchTrip,[e.target.name]:e.target.value
+        })
     }
     const formRef = useRef(null);
     const handleSubmit = (e) => {
 		e.preventDefault();
         console.log("searchTrip", searchTrip);
-        formRef.current.reset();
+        fetch('http://localhost:8000/search', {
+			method: 'POST',
+            headers: { 'Content-Type': "application/json"},
+			body: JSON.stringify(searchTrip)
+		})
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            setFindTrip(data);
+        })
+		.catch((err) => {
+            console.log(err);
+		});
     }
     return (
         <div className="Banner container">
            <div className="Banner-title mt-5 text-center">
-               <h2>Find Your Trip</h2>
+               <h2 style={{ 
+                   fontWeight: "bold"
+               }}>Find Your Trip</h2>
            </div>
             <div className="search-form">
                     <Form onSubmit={handleSubmit} ref={formRef}>
@@ -31,7 +49,6 @@ const Banner = () => {
                                     onBlur={handleBlur}
                                     name="startLocation"
                                     type="text"
-                                    id="startLocation" 
                                     className="form-control" 
                                     placeholder="Enter Start Location"
                                     required={true}
@@ -43,7 +60,6 @@ const Banner = () => {
                                     onBlur={handleBlur}
                                     name="destination"
                                     type="text"
-                                    id="destination" 
                                     className="form-control" 
                                     placeholder="Enter Destination"
                                     required={true}
@@ -55,6 +71,13 @@ const Banner = () => {
                         </div>
                     </Form>
                 </div>
+                <div className="myTrips-card row">
+                {
+                   findTrip.map(tripsData =>
+                        <FindTrips tripsData={tripsData}
+                            key={tripsData._id}></FindTrips>)
+                }
+              </div>
         </div>
     );
 };

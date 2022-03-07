@@ -5,22 +5,46 @@ import "./DriverCreateTrip.css";
 import Sidebar from '../Sidebar/Sidebar';
 
 const DriverCreateTrip = () => {
-    const [createTrip, setCreateTrip] = useState({
-        success: '',
-        error: ''
-    });
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log("usercrettrip", user);
 
+    const[formData, setFormData] = useState({
+        driverName: '', 
+        carName:'', 
+        carModelNumber:'',
+        startLocation:'',
+        destination:'',
+        fare:'',
+        seat:'',
+        smoke:'',
+        children:'',
+        isConfirmed: false,
+        uid:user.uid,
+        confirmBy: ''
+    });
+    console.log(formData);
     const handleBlur = e => {
-        const newTrip = { ...createTrip };
-        newTrip[e.target.name] = e.target.value;
-        console.log("newTrip: ", setCreateTrip(newTrip) );
-        setCreateTrip(newTrip);
-        e.preventDefault();
+        setFormData({
+            ...formData,[e.target.name]:e.target.value
+        })
     }
     const formRef = useRef(null);
 
     const handleSubmit = (e) => {
-		e.preventDefault();
+        console.log("data", formData);
+        e.preventDefault();
+		fetch('http://localhost:8000/createTrips', {
+			method: 'POST',
+            headers: { 'Content-Type': "application/json"},
+			body: JSON.stringify(formData)
+		})
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+        })
+		.catch((err) => {
+            console.log(err);
+		});
 		formRef.current.reset();
     }
 
@@ -32,10 +56,23 @@ const DriverCreateTrip = () => {
             <div className="col-md-8 mt-5">
                 <div className="d-flex justify-content-between mb-4">
                     <h3 className="ml-md-5 mb-0">Create Trip</h3>
-					<p>Name</p>
+					{/* <p>Name:{user.email}</p> */}
                 </div>
                 <div className="createTrip-form mt-5">
                     <Form onSubmit={handleSubmit} ref={formRef}>
+                    <div className="row">
+                            <Form.Group className="col-12" controlId="formBasicText">
+                                <Form.Label>Driver Name</Form.Label>
+                                <Form.Control
+                                    onBlur={handleBlur}
+                                    name="driverName"
+                                    type="text"
+                                    className="form-control" 
+                                    placeholder="Enter Your Name"
+                                    required={true}
+                                />
+						    </Form.Group>
+                        </div>
                     <div className="row">
                             <Form.Group className="col-6" controlId="formBasicText">
                                 <Form.Label>Car Name</Form.Label>
@@ -134,7 +171,7 @@ const DriverCreateTrip = () => {
                         </div>
                         <div className="mt-3">
                                 <button type="submit" className="btn">Create Trip</button>
-                            </div>
+                        </div>
                     </Form>
                 </div>
             </div>
